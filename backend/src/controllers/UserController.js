@@ -39,16 +39,26 @@ class UserController {
     const { email, password } = req.body;
 
     // TODO check for email and password
+    if(!email || !password) {
+      res.status(400).send({error: 'Please specify both email and password'})
+    }
 
     models.user
       .findByMail(email)
       .then(async ([rows]) => {
         if (rows[0] == null) {
           // TODO invalid email
+          res.status(403).json('Invalid email')
         } else {
-          const { id, email, password: hash, role } = rows[0];
+          const { id, email, password: hashedPassword, role } = rows[0];
 
           // TODO invalid password
+          const isVerified = await argon2.verify(hashedPassword, password)
+          if(isVerified) {
+            res.status(200).json({id, email, role})
+          } else {
+            res.status(403).send({error: "Invalid password"})
+          }
 
           // TODO sign JWT with 1h expiration
 

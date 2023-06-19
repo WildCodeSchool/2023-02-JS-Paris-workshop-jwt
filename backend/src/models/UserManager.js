@@ -4,7 +4,9 @@ class UserManager extends AbstractManager {
   static table = "user";
 
   // TODO complete the `findByMail` method
-  findByMail(email) {}
+  findByMail(email) {
+    return this.connection.query(`select * from ${UserManager.table} where email = ?`, [email])
+  }
 
   insert(user) {
     return this.connection.query(
