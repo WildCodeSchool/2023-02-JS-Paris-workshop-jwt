@@ -12,10 +12,9 @@ class UserController {
     // TODO hash password
     try {
       const hashedPassword = await argon2.hash(password)
-      req.body.password = hashedPassword
     
       models.user
-        .insert(req.body)
+        .insert({email, password: hashedPassword, role})
         .then(([result]) => {
           // TODO send the response
           if(result.affectedRows === 1) {
