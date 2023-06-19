@@ -3,13 +3,18 @@ const models = require("../models");
 class UserController {
   static register = async (req, res) => {
     // TODO check for email and password
-
+    if(req.body.email === null && req.body.password === null) {
+      res.status(400).send('Please specify both email and password')
+    }
     // TODO hash password
 
     models.user
       .insert(req.body)
       .then(([result]) => {
         // TODO send the response
+        if(result.affectedRows === 1) {
+          res.status(201).json({id: result.insertId, email: req.body.email, role: req.body.role})
+        }
       })
       .catch((err) => {
         console.error(err);
