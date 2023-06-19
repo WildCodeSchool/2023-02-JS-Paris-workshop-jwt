@@ -1,5 +1,6 @@
 const models = require("../models");
 const argon2 = require('argon2')
+const jwt = require('jsonwebtoken')
 
 class UserController {
   static register = async (req, res) => {
@@ -55,13 +56,15 @@ class UserController {
           // TODO invalid password
           const isVerified = await argon2.verify(hashedPassword, password)
           if(isVerified) {
-            res.status(200).json({id, email, role})
+            // TODO sign JWT with 1h expiration
+            const token = jwt.sign({id, role}, process.env.JWT_AUTH_SECRET, {expiresIn: "1h"})
+            res.status(200).json({id, email, role, token})
+             
           } else {
             res.status(403).send({error: "Invalid password"})
           }
 
-          // TODO sign JWT with 1h expiration
-
+         
           // TODO send the response and the HTTP cookie
         }
       })
