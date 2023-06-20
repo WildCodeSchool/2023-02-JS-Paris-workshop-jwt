@@ -9,7 +9,7 @@ router.post("/users/register", UserController.register);
 // TODO modify the `login` method in UserController
 router.post("/users/login", UserController.login);
 // TODO add the JWT middlewares to the `/users` route
-router.get("/users", UserController.browse);
+router.get("/users",UserController.authorization, UserController.browse);
 // TODO modify the `logout` method in UserController
 router.get("/users/logout", UserController.logout);
 
