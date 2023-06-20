@@ -1,23 +1,44 @@
 const models = require("../models");
+const argon2 = require("argon2");
 
 class UserController {
+  // ----------------------------------------------------------------------------------------
+  //                                      Register
+  // ----------------------------------------------------------------------------------------
+
   static register = async (req, res) => {
-    // TODO check for email and password
+    const { email, password, role } = req.body;
 
-    // TODO hash password
+    if (!email || !password) {
+      res.status(400).send({ error: "Please specify both email and password" });
+      return;
+    }
 
-    models.user
-      .insert(req.body)
-      .then(([result]) => {
-        // TODO send the response
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send({
-          error: err.message,
+    try {
+      const hash = await argon2.hash(password);
+
+      models.user
+        .insert({ email, password: hash, role })
+        .then(([result]) => {
+          res.status(201).send({ id: result.insertId, email, role });
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).send({
+            error: err.message,
+          });
         });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({
+        error: err.message,
       });
+    }
   };
+
+  // ----------------------------------------------------------------------------------------
+  //                                      Login
+  // ----------------------------------------------------------------------------------------
 
   static login = (req, res) => {
     const { email, password } = req.body;
@@ -47,6 +68,10 @@ class UserController {
       });
   };
 
+  // ----------------------------------------------------------------------------------------
+  //                                      Browse
+  // ----------------------------------------------------------------------------------------
+
   static browse = (req, res) => {
     models.user
       .findAll()
@@ -60,6 +85,10 @@ class UserController {
         });
       });
   };
+
+  // ----------------------------------------------------------------------------------------
+  //                                      logout
+  // ----------------------------------------------------------------------------------------
 
   static logout = (req, res) => {
     // TODO remove JWT token from HTTP cookies
@@ -88,6 +117,10 @@ class UserController {
         res.sendStatus(500);
       });
   };
+
+  // ----------------------------------------------------------------------------------------
+  //                                     Delete
+  // ----------------------------------------------------------------------------------------
 
   static delete = (req, res) => {
     models.user
