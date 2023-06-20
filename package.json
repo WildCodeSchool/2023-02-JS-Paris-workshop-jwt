@@ -12,5 +12,9 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^7.0.0"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "jsonwebtoken": "^9.0.0"
   }
 }
