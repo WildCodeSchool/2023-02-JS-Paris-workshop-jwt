@@ -116,6 +116,13 @@ class UserController {
   };
 
   // TODO add `isAdmin` middleware here!
+  static isAdmin = (req, res, next) => {
+    if(req.userRole === "ROLE_ADMIN") {
+      next()
+    } else {
+      res.sendStatus(403)
+    }
+  }
 
   static edit = (req, res) => {
     const user = req.body;
