@@ -1,16 +1,36 @@
 import { useState } from 'react';
+import axios from 'axios';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const url = import.meta.env.VITE_BACKEND_URL + '/users/login';
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(!email || !password) {
-      alert('Please specify both email and password')
+    if (email && password) {
+      axios
+        .post(
+          url,
+          {
+            email,
+            password,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => res.data)
+        .then((data) => {
+          console.log(data);
+          alert('success logged in')
+        })
+        .catch((err) => alert(err));
     } else {
-      console.log(email, password);
+      alert('Please specify both email and password');
     }
-  };
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <input
