@@ -83,6 +83,7 @@ class UserController {
       .findAll()
       .then(([rows]) => {
         // TODO send the list of users (without passwords)
+        res.status(200).json(rows)
       })
       .catch((err) => {
         console.error(err);

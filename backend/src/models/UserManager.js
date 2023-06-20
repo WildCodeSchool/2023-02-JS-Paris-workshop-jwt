@@ -21,6 +21,10 @@ class UserManager extends AbstractManager {
       [user.email, user.password, user.role, user.id]
     );
   }
+
+  findAll() {
+    return this.connection.query(`select id, email, role from  ${this.table}`);
+  }
 }
 
 module.exports = UserManager;
