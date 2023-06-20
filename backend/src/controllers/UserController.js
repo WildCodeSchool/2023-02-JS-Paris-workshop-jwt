@@ -95,6 +95,7 @@ class UserController {
 
   static logout = (req, res) => {
     // TODO remove JWT token from HTTP cookies
+    res.clearCookie('access_token').sendStatus(200)
   };
 
   // TODO add `authorization` middleware here!

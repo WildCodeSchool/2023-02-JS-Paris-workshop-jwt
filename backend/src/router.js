@@ -11,7 +11,7 @@ router.post("/users/login", UserController.login);
 // TODO add the JWT middlewares to the `/users` route
 router.get("/users",UserController.authorization,UserController.isAdmin, UserController.browse);
 // TODO modify the `logout` method in UserController
-router.get("/users/logout", UserController.logout);
+router.get("/users/logout",UserController.authorization,UserController.logout, UserController.logout);
 
 router.put("/users/:id", UserController.edit);
 router.delete("/users/:id", UserController.delete);
