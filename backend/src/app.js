@@ -2,16 +2,19 @@ const express = require("express");
 const path = require("path");
 
 const cors = require("cors");
+const cookieParser = require('cookie-parser')
 
 const app = express();
 
 // TODO add cookieParser here
+app.use(cookieParser())
 
 app.use(
   cors({
     origin: process.env.FRONTEND_URL ?? "http://localhost:3000",
     optionsSuccessStatus: 200,
     // TODO add credentials here
+    credentials: true,
   })
 );
 

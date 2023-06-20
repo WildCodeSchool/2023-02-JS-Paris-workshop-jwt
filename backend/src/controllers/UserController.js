@@ -58,14 +58,16 @@ class UserController {
           if(isVerified) {
             // TODO sign JWT with 1h expiration
             const token = jwt.sign({id, role}, process.env.JWT_AUTH_SECRET, {expiresIn: "1h"})
-            res.status(200).json({id, email, role, token})
+
+            res.cookie('access_token', token, {
+              httpOnly: true,
+            }).status(200).json({id, email, role})
              
           } else {
             res.status(403).send({error: "Invalid password"})
           }
 
          
-          // TODO send the response and the HTTP cookie
         }
       })
       .catch((err) => {
