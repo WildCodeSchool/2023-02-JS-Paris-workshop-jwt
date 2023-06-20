@@ -1,32 +1,33 @@
 import { useState } from "react"
 import axios from "axios"
 
-function Login() {
+function AddUser() {
   // const [email, setEmail] = useState("")
   // const [password, setPassword] = useState("")
-  const [login, setLogin] = useState({email : "", password : ""})
+  const [signIn, setSignIn] = useState({email : "", password : ""})
+  
 
 
 
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    if (login.email === "" || login.password === "") {
+    if (signIn.email === "" || signIn.password === "") {
       alert("Please specify both email and password")
     } else {
       console.log("hey", import.meta.env.VITE_BACKEND_URL);
-      axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/login`, {
-        email: login.email,
-        password: login.password
+      axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/register`, {
+        email: signIn.email,
+        password: signIn.password
       }, {
         withCredentials: true,
       }).then( (response) => {
         console.log(response.data);
-        alert("Successfully logged in");
+        alert("Successfully sign in");
       })
       .catch( (error) => {
         console.log(error);
-        alert(err.response.data.error);
+        alert(error.response.data?.error);
 
       });
       
@@ -44,8 +45,8 @@ function Login() {
       name='email'
       id='email'
       placeholder='test@blabla.com'
-      value={login.email}
-      onChange={(e) => setLogin({ ...login, email : e.target.value })}
+      value={signIn.email}
+      onChange={(e) => setSignIn({ ...signIn, email : e.target.value })}
     />
   </label>
   <br />
@@ -56,14 +57,14 @@ function Login() {
       name='password'
       id='password'
       placeholder='***********'
-      value={login.password}
-      onChange={(e) => setLogin({ ...login, password : e.target.value })}
+      value={signIn.password}
+      onChange={(e) => setSignIn({ ...signIn, password : e.target.value })}
     />
   </label>
   <br />
-  <input type='submit' value='Login' />
+  <input type='submit' value='Sign in' />
 </form>
   )
 }
 
-export default Login;
+export default AddUser;
