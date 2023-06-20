@@ -1,7 +1,10 @@
+import api from "../services/api";
+
 function Logout() {
   const handleSubmit = (event) => {
     event.preventDefault();
     // TODO
+    api.get("/users/logout");
   };
 
   return (
